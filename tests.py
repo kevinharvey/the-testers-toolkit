@@ -6,15 +6,25 @@ from shapes import Rectangle, Cylinder
 
 class RectangleTestCase(TestCase):
 
+    def setUp(self):
+        self.rectangle = Rectangle(width=7, height=8)
+
     def test_rectangle_area(self):
         """
         Test that we can calculate the area of a rectangle
         """
-        rectangle = Rectangle(width=7, height=8)
-
-        area = rectangle.area()
+        area = self.rectangle.area()
 
         self.assertEqual(area, 56)
+
+    @mock.patch('shapes.tweet')
+    def test_rectangle_broadcast(self, mock_tweet):
+        """
+        Tests that we call tweet with a formatted message
+        """
+        self.rectangle.broadcast()
+
+        mock_tweet.assert_called_with('My rectangle is 7 by 8')
 
 
 class CylinderTestCase(TestCase):

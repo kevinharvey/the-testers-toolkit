@@ -1,5 +1,7 @@
 import math
 
+from twitter import tweet
+
 
 class Rectangle(object):
 
@@ -10,6 +12,10 @@ class Rectangle(object):
 
     def area(self):
         return self.width * self.height
+
+    def broadcast(self):
+        message = 'My rectangle is {} by {}'.format(self.width, self.height)
+        tweet(message)
 
 
 class Cylinder(object):
