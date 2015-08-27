@@ -12,6 +12,9 @@ def list_twitter_repos():
 	url = 'https://api.github.com/orgs/twitter/repos'
 	repo_response = requests.get(url)
 	
+	if repo_response.status_code == 404:
+		return 'No Twitter organization found'
+	
 	if repo_response.status_code == 500:
 		return 'The GitHub API is currently unavailable'
 		
