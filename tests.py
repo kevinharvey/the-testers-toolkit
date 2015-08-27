@@ -1,7 +1,10 @@
 import unittest
 from unittest import TestCase, mock
 
+import vcr
+
 from shapes import Rectangle, Cylinder
+from twitter import list_twitter_repos
 
 
 class RectangleTestCase(TestCase):
@@ -49,7 +52,28 @@ class CylinderTestCase(TestCase):
         cylinder = Cylinder(radius=2, height=7)
 
         self.assertEqual(cylinder.volume(), 35)
+		
 
+class TwitterTestCase(TestCase):
+	
+	def test_list_twitter_repos(self):
+		"""
+		Test that we can get a list of Twitter's repos
+		"""
+		with vcr.use_cassette('vcr/list_twitter_repos.yaml'):
+			repos = list_twitter_repos()
+		
+		self.assertEqual(repos[0], 'kestrel')
+
+	def test_list_twitter_repos_error(self):
+		"""
+		Test that we fail gracefully if the GitHub API is down
+		"""
+		with vcr.use_cassette('vcr/list_twitter_repos_error.yaml'):
+			repos = list_twitter_repos()
+		
+		self.assertEqual(repos, 'The GitHub API is currently unavailable')
+		
 
 if __name__ == '__main__':
     unittest.main()
